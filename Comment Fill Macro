@@ -1,0 +1,42 @@
+Private Sub CommandButton1_Click()
+Sheets("Macro1").Select
+Range("F2").Select
+Range(Selection, Selection.End(xlDown)).Select
+Selection.Clear
+Range("A1").Select
+Dim cellCount As Integer
+Range("A2").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    cellCount = Selection.Count
+    ''MsgBox cellCount
+    Range("A2").Select
+    Selection.End(xlToRight).Select
+    
+    For i = 1 To cellCount
+        
+            
+            If Selection.Value = "Red" Then
+                ActiveCell.Offset(0, 1).Select
+                ActiveCell.Value = "Project's RAG status is RED. PM to explain in Review Board Meeting"
+                ActiveCell.Offset(1, 0).Select
+                ActiveCell.Offset(0, -1).Select
+                
+                    ElseIf Selection.Value = "Green" Then
+                    ActiveCell.Offset(0, 1).Select
+                ActiveCell.Value = "Project good to go"
+                ActiveCell.Offset(1, 0).Select
+                ActiveCell.Offset(0, -1).Select
+                
+                ElseIf Selection.Value = "Amber" Then
+                
+                ActiveCell.Offset(0, 1).Select
+                ActiveCell.Value = "Project's RAG status is Amber. PM to explain in Review Board Meeting"
+                ActiveCell.Offset(1, 0).Select
+                ActiveCell.Offset(0, -1).Select
+                    
+                    
+                End If
+                
+                Next i
+                Range("A1").Select
+End Sub
