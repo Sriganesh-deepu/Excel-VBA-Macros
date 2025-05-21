@@ -1,0 +1,63 @@
+Sub loop_Inside_folder()
+Dim filedir As String
+Dim filetolist As String
+Dim fname As Date
+Dim Rcount As Integer
+
+With Application.FileDialog(msoFileDialogFolderPicker)
+.Title = "Please select the folder"
+.ButtonName = "Select Folder"
+    If .Show = 0 Then
+    MsgBox "no folder selected"
+    Exit Sub
+    Else
+    filedir = .SelectedItems(1) & "\"
+    'MsgBox filedir
+    End If
+End With
+
+
+filetolist = Dir(filedir & "*.csv")
+'MsgBox filetolist
+ 'Workbooks.Open (filedir & filetolist)
+ 
+    Do Until filetolist = ""
+        Workbooks.Open (filedir & filetolist)
+        Range("A1").Select
+        
+'to count the rows in VVAT file
+        
+        Rcount = ActiveSheet.UsedRange.Rows.count
+        Debug.Print Rcount
+        Rcount = Rcount - 1
+        
+' to obtain the currently opened VVAT file date
+
+        fname = Left(filetolist, 10)
+        Debug.Print fname
+        
+' to switch to consolidation file
+
+        Workbooks("prac.xlsm").Activate
+        Sheets("Mast").Activate
+        Range("A7").Select
+        ActiveCell.EntireRow.Offset(1).Resize(Rcount).Insert Shift:=xlDown
+        
+        If ActiveCell.Value = fname Then
+            Workbooks(filetolist).Activate
+            ActiveCell.CurrentRegion.Copy
+            
+            
+        End If
+        
+        DoEvents
+        filetolist = Dir
+        Debug.Print filetolist
+        
+            On Error Resume Next
+            
+    Loop
+
+
+    
+End Sub
