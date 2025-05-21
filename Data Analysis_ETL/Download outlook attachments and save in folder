@@ -1,0 +1,46 @@
+Sub mail4()
+Dim olapp As Object
+Dim olmail As Object
+Dim olitems As Object
+Dim olfolder As Object
+Dim at As Outlook.Attachment
+Dim coun As Long
+Dim i As Long, c As Long
+Dim afile As String
+
+afile = "C:\Users\skannaiyan\Desktop\Macro\mail_Downloads\*.csv"
+
+If Len(Dir$(afile)) > 0 Then
+
+Kill afile
+
+End If
+
+Set olapp = GetObject(, "outlook.application")
+Set olfolder = olapp.GetNamespace("MAPI").Folders("Mailbox - Kannaiyan, Sriganesh").Folders("Inbox").Folders("VVAT")
+Set olitems = olfolder.Items
+coun = olitems.count
+'Debug.Print coun
+
+
+
+For i = olitems.count To 1 Step -1
+
+    Set olmail = olitems(i)
+    'Debug.Print olmail.Subject
+
+        If VBA.InStr(olmail.Subject, "2021-10") > 0 Then
+        
+            For Each at In olmail.Attachments
+         
+                
+                at.SaveAsFile "C:\Users\skannaiyan\Desktop\Macro\mail_Downloads" & "\" & at.filename
+        
+             Next at
+            
+                
+        End If
+    
+Next i
+ 
+End Sub
